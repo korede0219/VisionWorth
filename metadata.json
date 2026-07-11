@@ -1,0 +1,8 @@
+{
+  "name": "Vision Worth",
+  "description": "Vision Worth — Luxury Furniture & Bespoke Living. A high-end Nigerian furniture brand fusing modern African heritage with minimalist geometry.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

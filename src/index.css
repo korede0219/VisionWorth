@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..700;1,400..700&family=Inter:wght@200;300;400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-cream: #F8F4EE;
+  --color-cream-dark: #F0EBE1;
+  --color-black: #0D0B09;
+  --color-dark: #1A1612;
+  --color-dark-mid: #241F1A;
+  --color-gold: #B8965A;
+  --color-gold-light: #D4AF7A;
+  --color-gold-dim: #8A6E3E;
+  --color-txt-primary: #1A1612;
+  --color-txt-muted: #8C7B6B;
+  --color-txt-light: #C4B8A8;
+  --color-border-default: #E8E0D4;
+  --color-border-dark: rgba(255, 255, 255, 0.06);
+
+  --font-display: "EB Garamond", serif;
+  --font-body: "Inter", sans-serif;
+}
+
+/* Zero rounded corners for luxury sharp edges */
+* {
+  border-radius: 0px !important;
+}
+
+body {
+  background-color: #F8F4EE;
+  color: #1A1612;
+  font-family: "Inter", sans-serif;
+  overflow-x: hidden;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F8F4EE;
+}
+::-webkit-scrollbar-thumb {
+  background: #8A6E3E;
+  transition: background 0.3s ease;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #B8965A;
+}
+
+/* Text Selection Highlight */
+::selection {
+  background-color: #B8965A;
+  color: #0D0B09;
+}
