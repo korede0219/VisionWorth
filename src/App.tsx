@@ -776,7 +776,7 @@ export default function App() {
             transition={{ duration: 1.5, delay: 0.8, ease: "easeOut" }}
           />
         </div>
-  {'Calacatta'}
+  
         {/* Bottom details block */}
         <div className="w-full h-[40%] md:h-[35%] flex items-center bg-cream px-6 md:px-12 pb-10">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 w-full items-center">
