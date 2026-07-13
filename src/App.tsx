@@ -63,21 +63,21 @@ export default function App() {
   const [isCursorHovered, setIsCursorHovered] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
 
-  // Signature piece images setup
+  // Signature piece images setup — same luxury accent chair, 3 angles
   const signatureImages = [
     { 
-      front: "https://images.unsplash.com/photo-1592078615290-033ee584e267?q=80&w=800", 
-      back: "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?q=80&w=800", 
+      front: "/Wooden_lounge_chair_studio_202607131956.jpeg", 
+      back: "/Wooden_lounge_chair_studio_202607131956_2.jpeg", 
       label: "01 / 03" 
     },
     { 
-      front: "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?q=80&w=800", 
-      back: "https://images.unsplash.com/photo-1592078615290-033ee584e267?q=80&w=800", 
+      front: "/Wooden_lounge_chair_studio_202607131956_2.jpeg", 
+      back: "/Wooden_lounge_chair_studio_202607131956_3.jpeg", 
       label: "02 / 03" 
     },
     { 
-      front: "https://images.unsplash.com/photo-1580481072645-022f9a6dbf27?q=80&w=800", 
-      back: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=800", 
+      front: "/Wooden_lounge_chair_studio_202607131956_3.jpeg", 
+      back: "/Wooden_lounge_chair_studio_202607131956.jpeg", 
       label: "03 / 03" 
     }
   ];
@@ -532,21 +532,38 @@ export default function App() {
         {showPreloader && (
           <motion.div
             id="preloader"
-            className="fixed inset-0 bg-black z-[9999] flex flex-col items-center justify-center pointer-events-auto"
+            className="fixed inset-0 bg-black z-[9999] flex flex-col items-center justify-center pointer-events-auto grain-overlay"
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.6, ease: "easeInOut" }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
           >
+            {/* Decorative corner accents */}
+            <div className="absolute top-8 left-8 w-12 h-12 border-t border-l border-gold/20" />
+            <div className="absolute top-8 right-8 w-12 h-12 border-t border-r border-gold/20" />
+            <div className="absolute bottom-8 left-8 w-12 h-12 border-b border-l border-gold/20" />
+            <div className="absolute bottom-8 right-8 w-12 h-12 border-b border-r border-gold/20" />
+
             <motion.div
               initial={{ opacity: 0, y: 25 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1.2, ease: "easeOut" }}
-              className="text-center select-none"
+              className="text-center select-none relative z-10"
             >
-              <h1 className="font-display font-light text-3xl md:text-5xl text-cream tracking-[0.25em] uppercase leading-none">
+              <h1 className="font-display font-light text-3xl md:text-5xl text-cream tracking-[0.2em] uppercase leading-none">
+                <em className="text-gold not-italic font-display italic tracking-[0.15em]">A1</em>{" "}
                 Vision Worth
               </h1>
-              <p className="font-body text-[9px] text-gold tracking-[0.35em] uppercase mt-5">
-                Lagos • Handcrafted Living
+              {/* Animated gold shimmer line */}
+              <motion.div 
+                className="h-[1px] gold-shimmer-line mx-auto mt-4"
+                initial={{ width: 0 }}
+                animate={{ width: "60%" }}
+                transition={{ duration: 1.5, delay: 0.5, ease: "easeOut" }}
+              />
+              <p className="font-display italic text-[10px] text-gold/70 tracking-[0.3em] mt-4">
+                "Building Vision with A1 Excellence"
+              </p>
+              <p className="font-body text-[8px] text-neutral-500 tracking-[0.35em] uppercase mt-3">
+                Lagos • Bespoke Furniture
               </p>
             </motion.div>
           </motion.div>
@@ -597,6 +614,7 @@ export default function App() {
           {...hoverProps}
           className="font-display font-light text-lg md:text-2xl text-dark tracking-[0.2em] uppercase select-none hover:opacity-85 transition-opacity duration-300"
         >
+          <em className="text-gold not-italic font-display italic">A1</em>{" "}
           Vision Worth
         </a>
 
@@ -700,16 +718,20 @@ export default function App() {
                   <p className="text-gold mb-1 font-semibold">Showroom Address</p>
                   <p className="not-italic text-neutral-400 normal-case">
                     A1 Visionworth Classic Nigeria Ltd.<br />
-                    57 Iwaya Road, Yaba, Lagos
+                    57, Iwaya Road, Yaba, Lagos<br />
+                    <span className="text-neutral-500 text-[9px]">RC: 1299138</span>
                   </p>
                 </div>
                 <div className="md:text-right">
                   <p className="text-gold mb-1 font-semibold">Inquiries</p>
-                  <a href="tel:08054622076" {...hoverProps} className="hover:text-gold text-neutral-400 block transition-colors duration-300">
-                    08054622076
+                  <a href="tel:+2348054622076" {...hoverProps} className="hover:text-gold text-neutral-400 block transition-colors duration-300">
+                    +234 805 462 2076
                   </a>
-                  <a href="mailto:inquire@visionworth.com" {...hoverProps} className="hover:text-gold text-neutral-400 block transition-colors duration-300 normal-case">
-                    inquire@visionworth.com
+                  <a href="tel:+2348026572272" {...hoverProps} className="hover:text-gold text-neutral-400 block transition-colors duration-300">
+                    +234 802 657 2272
+                  </a>
+                  <a href="mailto:slvisionwcinfo@gmail.com" {...hoverProps} className="hover:text-gold text-neutral-400 block transition-colors duration-300 normal-case mt-1">
+                    slvisionwcinfo@gmail.com
                   </a>
                 </div>
               </div>
@@ -723,11 +745,11 @@ export default function App() {
           {/* 6. SECTION 01 — HERO */}
       <section id="hero" className="relative h-screen w-full flex flex-col justify-between overflow-hidden bg-cream pt-20">
         {/* Top 65% bleed container */}
-        <div className="relative w-full h-[60%] md:h-[65%] overflow-hidden">
+        <div className="relative w-full h-[60%] md:h-[65%] overflow-hidden grain-overlay">
           {/* Animated scale loop on image */}
           <motion.img 
             id="hero-image" 
-            src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=1600" 
+            src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=1920" 
             alt="Luxury Architectural Interior" 
             className="w-full h-full object-cover origin-center"
             animate={{ scale: [1.07, 1.0, 1.07] }}
@@ -738,9 +760,23 @@ export default function App() {
             }}
           />
           {/* Bottom fade shadow overlay */}
-          <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-cream to-transparent pointer-events-none" />
+          <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-cream via-cream/60 to-transparent pointer-events-none z-[2]" />
+          
+          {/* Decorative diagonal accent line */}
+          <motion.div 
+            className="absolute bottom-16 right-8 md:right-16 w-[1px] h-0 bg-gold/40 origin-top z-[3]"
+            style={{ transform: "rotate(-15deg)" }}
+            animate={{ height: [0, 120] }}
+            transition={{ duration: 1.5, delay: 0.5, ease: "easeOut" }}
+          />
+          <motion.div 
+            className="absolute bottom-20 right-14 md:right-24 w-[1px] h-0 bg-gold/20 origin-top z-[3]"
+            style={{ transform: "rotate(-15deg)" }}
+            animate={{ height: [0, 80] }}
+            transition={{ duration: 1.5, delay: 0.8, ease: "easeOut" }}
+          />
         </div>
-
+  {'Calacatta'}
         {/* Bottom details block */}
         <div className="w-full h-[40%] md:h-[35%] flex items-center bg-cream px-6 md:px-12 pb-10">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 w-full items-center">
@@ -794,13 +830,16 @@ export default function App() {
       </section>
 
       {/* 7. SECTION 02 — DOUBLE MARQUEE RUNNERS */}
-      <section className="w-full bg-dark overflow-hidden py-6 select-none relative z-20">
-        <div className="flex flex-col space-y-4">
+      <section className="w-full bg-dark overflow-hidden py-8 select-none relative z-20">
+        {/* Subtle top/bottom gold border lines */}
+        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
+        <div className="flex flex-col space-y-5">
           
           {/* Row 1: Left runner marquee */}
           <div className="flex overflow-hidden w-full">
             <motion.div 
-              className="flex whitespace-nowrap font-display text-gold-light italic text-xs md:text-sm tracking-widest uppercase"
+              className="flex whitespace-nowrap font-display text-gold-light italic text-sm md:text-base tracking-widest uppercase marquee-glow"
               animate={{ x: ["0%", "-50%"] }}
               transition={{
                 repeat: Infinity,
@@ -816,7 +855,7 @@ export default function App() {
           {/* Row 2: Right runner marquee */}
           <div className="flex overflow-hidden w-full">
             <motion.div 
-              className="flex whitespace-nowrap font-display text-gold-light italic text-xs md:text-sm tracking-widest uppercase"
+              className="flex whitespace-nowrap font-display text-gold-light italic text-sm md:text-base tracking-widest uppercase marquee-glow"
               animate={{ x: ["-50%", "0%"] }}
               transition={{
                 repeat: Infinity,
@@ -857,19 +896,19 @@ export default function App() {
             {
               title: "The Serenity Suite",
               desc: "Bedroom Collection • 12 Pieces",
-              img: "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?q=80&w=800",
+              img: "/Wooden_king-size_bed_frame_202607131957.jpeg",
               category: "bedroom"
             },
             {
               title: "The Grand Feast",
               desc: "Dining Collection • 8 Pieces",
-              img: "https://images.unsplash.com/photo-1617098900591-3f90928e8c54?q=80&w=800",
+              img: "/Oval_wooden_dining_table_studio_202607131956.jpeg",
               category: "tables"
             },
             {
               title: "The Executive Study",
               desc: "Office Collection • 6 Pieces",
-              img: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=800",
+              img: "/Oak_executive_desk_studio_202607131957.jpeg",
               category: "office"
             },
           ].map((item) => (
@@ -920,7 +959,7 @@ export default function App() {
         {/* Left bleed side */}
         <div className="relative h-72 md:h-auto min-h-[400px] overflow-hidden">
           <img 
-            src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=1200" 
+            src="/Handcrafted_wooden_screen_studio_202607131957.jpeg" 
             alt="High-End Design Space" 
             className="w-full h-full object-cover" 
           />
@@ -1559,24 +1598,35 @@ export default function App() {
       <footer className="w-full bg-black text-cream pt-20 pb-8 px-6 md:px-12 border-t border-white/5">
         
         <div className="text-center mb-16">
-          <h2 className="font-display font-light text-3xl md:text-5xl text-cream tracking-[0.25em] uppercase leading-none select-none">
+          <h2 className="font-display font-light text-3xl md:text-5xl text-cream tracking-[0.2em] uppercase leading-none select-none">
+            <em className="text-gold not-italic font-display italic">A1</em>{" "}
             Vision Worth
           </h2>
-          <div className="h-[1px] bg-white/10 w-full mt-10" />
+          <p className="font-display italic text-[10px] text-gold/40 tracking-[0.25em] mt-3">
+            Classic Nigeria Ltd.
+          </p>
+          <div className="divider-diamond w-full mt-10" />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 font-body text-xs text-neutral-400 uppercase tracking-wider mb-20">
           <div className="flex flex-col space-y-4">
             <span className="font-display italic text-gold tracking-normal text-sm normal-case">
-              Handcrafted with intention in Lagos.
+              "Building Vision with A1 Excellence"
             </span>
             <address className="not-italic text-neutral-400 leading-relaxed text-[11px] normal-case">
               A1 Visionworth Classic Nigeria Ltd.<br />
-              57 Iwaya Road, Yaba, Lagos<br />
-              Nigeria
+              57, Iwaya Road, Yaba, Lagos<br />
+              Nigeria<br />
+              <span className="text-neutral-500 text-[9px] uppercase tracking-wider">RC: 1299138</span>
             </address>
-            <a href="tel:08054622076" {...hoverProps} className="text-neutral-400 hover:text-gold transition-colors duration-300 block text-[11px]">
-              08054622076
+            <a href="tel:+2348054622076" {...hoverProps} className="text-neutral-400 hover:text-gold transition-colors duration-300 block text-[11px]">
+              +234 805 462 2076
+            </a>
+            <a href="tel:+2348026572272" {...hoverProps} className="text-neutral-400 hover:text-gold transition-colors duration-300 block text-[11px]">
+              +234 802 657 2272
+            </a>
+            <a href="mailto:slvisionwcinfo@gmail.com" {...hoverProps} className="text-neutral-400 hover:text-gold transition-colors duration-300 block text-[11px] normal-case">
+              slvisionwcinfo@gmail.com
             </a>
           </div>
 
