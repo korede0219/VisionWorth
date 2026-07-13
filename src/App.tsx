@@ -58,6 +58,17 @@ export default function App() {
   const [formMessage, setFormMessage] = useState("");
   const [formTitle, setFormTitle] = useState("Place An Order");
 
+  // Bespoke Step-by-Step Customizer States
+  const [customizerStep, setCustomizerStep] = useState(1);
+  const [customizerCategory, setCustomizerCategory] = useState("seating");
+  const [customizerBasePiece, setCustomizerBasePiece] = useState("The Architect Chair");
+  const [customizerWood, setCustomizerWood] = useState("Smoked Black Walnut");
+  const [customizerAccent, setCustomizerAccent] = useState("Aged Brushed Brass");
+  const [customizerSizeScale, setCustomizerSizeScale] = useState("Standard");
+  const [customizerWidth, setCustomizerWidth] = useState(82);
+  const [customizerDepth, setCustomizerDepth] = useState(68);
+  const [customizerHeight, setCustomizerHeight] = useState(74);
+
   // Custom Cursor state (Only active on desktop screen sizes)
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isCursorHovered, setIsCursorHovered] = useState(false);
@@ -66,19 +77,19 @@ export default function App() {
   // Signature piece images setup
   const signatureImages = [
     { 
-      front: "https://images.unsplash.com/photo-1592078615290-033ee584e267?q=80&w=800", 
-      back: "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?q=80&w=800", 
-      label: "01 / 03" 
+      front: "https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?auto=format&fit=crop&q=80&w=800&h=800", 
+      back: "https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?auto=format&fit=crop&q=80&w=800&h=800&fp-y=0.2&fp-x=0.5&crop=focalpoint&fp-z=1.5", 
+      label: "01 / 03 — ARCHITECTURAL PERSPECTIVE" 
     },
     { 
-      front: "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?q=80&w=800", 
-      back: "https://images.unsplash.com/photo-1592078615290-033ee584e267?q=80&w=800", 
-      label: "02 / 03" 
+      front: "https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?auto=format&fit=crop&q=80&w=800&h=800&fp-y=0.45&fp-x=0.55&crop=focalpoint&fp-z=2", 
+      back: "https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?auto=format&fit=crop&q=80&w=800&h=800&fp-y=0.5&fp-x=0.5&crop=focalpoint&fp-z=2.5", 
+      label: "02 / 03 — HAND-STITCHED STRAP JOINTS" 
     },
     { 
-      front: "https://images.unsplash.com/photo-1580481072645-022f9a6dbf27?q=80&w=800", 
-      back: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=800", 
-      label: "03 / 03" 
+      front: "https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?auto=format&fit=crop&q=80&w=800&h=800&fp-y=0.3&fp-x=0.45&crop=focalpoint&fp-z=3", 
+      back: "https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?auto=format&fit=crop&q=80&w=800&h=800", 
+      label: "03 / 03 — HIGH-PRESSURE CANTILEVER PROFILE" 
     }
   ];
 
@@ -218,6 +229,166 @@ export default function App() {
     }
   };
 
+  // Helper to retrieve products for customizer category
+  const getProductsForCategory = (cat: string) => {
+    switch (cat) {
+      case "seating":
+        return [
+          { id: "arch-chair", name: "The Architect Chair", price: "₦520,000", spec: "Sleek cantilever lounge" },
+          { id: "alto-stool", name: "The Alto Bar Stool", price: "₦180,000", spec: "High leather-wrapped seat" },
+          { id: "meridian-chair", name: "The Meridian Accent Chair", price: "₦420,000", spec: "Woven seat, modern profile" },
+          { id: "atelier-stool", name: "The Atelier Step Stool", price: "₦150,000", spec: "Sturdy solid iroko steps" }
+        ];
+      case "tables":
+        return [
+          { id: "monarch-table", name: "The Monarch Dining Table", price: "₦1,250,000", spec: "Smoked Walnut & brass inlay" },
+          { id: "orbit-table", name: "The Orbit Coffee Table", price: "₦290,000", spec: "Minimalist concrete top" },
+          { id: "vanguard-table", name: "The Vanguard Coffee Table", price: "₦310,000", spec: "Symmetric walnut layout" },
+          { id: "sovereign-ladder", name: "The Sovereign Library Ladder", price: "₦340,000", spec: "Walnut folding steps" }
+        ];
+      case "bedroom":
+        return [
+          { id: "haven-bed", name: "The Haven Platform Bed", price: "₦1,150,000", spec: "Ivory Bouclé padded backrest" },
+          { id: "aura-dresser", name: "The Aura Fluted Dresser", price: "₦780,000", spec: "Solid ash, gold handle hardware" }
+        ];
+      case "office":
+        return [
+          { id: "prestige-desk", name: "The Prestige Writing Desk", price: "₦640,000", spec: "Steel and teak desk" },
+          { id: "obsidian-desk", name: "The Obsidian Executive Desk", price: "₦1,050,000", spec: "Charred oak executive slab" }
+        ];
+      case "custom":
+      default:
+        return [
+          { id: "solace-bookshelf", name: "The Solace Bookshelf", price: "₦450,000", spec: "Spacious layout with steel" },
+          { id: "lagos-sideboard", name: "The Lagos Sideboard", price: "₦890,000", spec: "Carved geometric fronts" },
+          { id: "custom-piece", name: "Custom Statement Commission", price: "Based on Brief", spec: "Designed from your description" }
+        ];
+    }
+  };
+
+  const selectBasePiece = (name: string, category: string) => {
+    setCustomizerBasePiece(name);
+    if (category === "seating") {
+      setCustomizerWidth(82);
+      setCustomizerDepth(68);
+      setCustomizerHeight(74);
+    } else if (category === "tables") {
+      if (name.includes("Dining")) {
+        setCustomizerWidth(220);
+        setCustomizerDepth(100);
+        setCustomizerHeight(75);
+      } else if (name.includes("Ladder")) {
+        setCustomizerWidth(55);
+        setCustomizerDepth(80);
+        setCustomizerHeight(165);
+      } else {
+        setCustomizerWidth(120);
+        setCustomizerDepth(120);
+        setCustomizerHeight(42);
+      }
+    } else if (category === "bedroom") {
+      setCustomizerWidth(210);
+      setCustomizerDepth(190);
+      setCustomizerHeight(110);
+    } else if (category === "office") {
+      setCustomizerWidth(160);
+      setCustomizerDepth(80);
+      setCustomizerHeight(76);
+    } else {
+      setCustomizerWidth(140);
+      setCustomizerDepth(45);
+      setCustomizerHeight(85);
+    }
+  };
+
+  // Helper to estimate price dynamically based on customizer choices
+  const calculateEstimatedPrice = () => {
+    let basePriceNum = 450000;
+    
+    const matchedProduct = PRODUCTS.find(
+      (p) => p.product.toLowerCase() === customizerBasePiece.toLowerCase()
+    );
+    if (matchedProduct) {
+      const priceStr = matchedProduct.price.replace(/[^\d]/g, "");
+      const parsed = parseInt(priceStr, 10);
+      if (!isNaN(parsed)) basePriceNum = parsed;
+    } else {
+      if (customizerCategory === "seating") basePriceNum = 350000;
+      else if (customizerCategory === "tables") basePriceNum = 550000;
+      else if (customizerCategory === "bedroom") basePriceNum = 950000;
+      else if (customizerCategory === "office") basePriceNum = 750000;
+      else if (customizerCategory === "custom") basePriceNum = 450000;
+    }
+
+    let woodSurcharge = 0;
+    if (customizerWood === "Smoked Black Walnut") woodSurcharge = 80000;
+    else if (customizerWood === "African Mahogany") woodSurcharge = 50000;
+    else if (customizerWood === "Solid Teak") woodSurcharge = 60000;
+    else if (customizerWood === "Ebonized Oak") woodSurcharge = 40000;
+
+    let accentSurcharge = 0;
+    if (customizerAccent === "Calacatta Marble") accentSurcharge = 120000;
+    else if (customizerAccent === "Cordovan Leather") accentSurcharge = 90000;
+    else if (customizerAccent === "Aged Brushed Brass") accentSurcharge = 50000;
+    else if (customizerAccent === "Fluted Glass") accentSurcharge = 30000;
+
+    let scaleMultiplier = 1.0;
+    if (customizerSizeScale === "Compact Living") scaleMultiplier = 0.85;
+    else if (customizerSizeScale === "Grand Suite") scaleMultiplier = 1.25;
+    else if (customizerSizeScale === "Custom") {
+      const standardVolume = 80 * 80 * 75;
+      const currentVolume = customizerWidth * customizerDepth * customizerHeight;
+      const ratio = currentVolume / standardVolume;
+      scaleMultiplier = Math.max(0.75, Math.min(1.8, ratio));
+    }
+
+    return Math.round((basePriceNum + woodSurcharge + accentSurcharge) * scaleMultiplier);
+  };
+
+  const handleCustomizerSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!formName || !formEmail || !formPhone) return;
+
+    const randCode = `VW-BESPOKE-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
+
+    const formattedPrice = new Intl.NumberFormat("en-NG", {
+      style: "currency",
+      currency: "NGN",
+      maximumFractionDigits: 0
+    }).format(calculateEstimatedPrice());
+
+    const generatedBrief = `Bespoke Commission Specifications:\n` +
+      `- Base Piece: ${customizerBasePiece}\n` +
+      `- Core Timber Selection: ${customizerWood}\n` +
+      `- Accent Details: ${customizerAccent}\n` +
+      `- Sizing Layout: ${customizerSizeScale} (${customizerWidth}cm W × ${customizerDepth}cm D × ${customizerHeight}cm H)\n` +
+      `- Guide Investment Estimate: ${formattedPrice}\n\n` +
+      `Client's Personal Brief Notes:\n` +
+      `"${formMessage || "No additional notes provided."}"`;
+
+    const newInquiry: Inquiry = {
+      refCode: randCode,
+      name: formName,
+      email: formEmail,
+      phone: formPhone,
+      interest: customizerCategory,
+      message: generatedBrief,
+      date: new Date().toISOString()
+    };
+
+    const newInquiriesList = [...inquiries, newInquiry];
+    saveInquiries(newInquiriesList);
+
+    setActiveInquiry(newInquiry);
+    setIsReceiptOpen(true);
+
+    setFormName("");
+    setFormEmail("");
+    setFormPhone("");
+    setFormMessage("");
+    setCustomizerStep(1);
+  };
+
   // Form submission handling
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -257,6 +428,11 @@ export default function App() {
     setFormInterest(category);
     setFormMessage(`I would like to place an order inquiry for ${product} (${price}). Let's align on lead times, delivery details, and wood finishes.`);
     setFormTitle(`Order: ${product}`);
+    
+    // Auto-populate Customizer states
+    setCustomizerCategory(category);
+    setCustomizerBasePiece(product);
+    setCustomizerStep(4);
 
     // Smooth scroll to form section
     const formSection = document.getElementById("newsletter");
@@ -272,6 +448,12 @@ export default function App() {
     setFormInterest("custom");
     setFormMessage(`I am interested in commissioning a custom order for: ${itemsText}. Please coordinate details, wood choice samples, and delivery timelines to Lagos.`);
     setFormTitle("Custom Bulk Commission");
+    
+    // Auto-populate Customizer states
+    setCustomizerCategory("custom");
+    setCustomizerBasePiece(wishlist.map((item) => item.product).join(", "));
+    setCustomizerStep(4);
+    
     setIsWishlistOpen(false);
 
     // Smooth scroll to form section
@@ -540,13 +722,22 @@ export default function App() {
               initial={{ opacity: 0, y: 25 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1.2, ease: "easeOut" }}
-              className="text-center select-none"
+              className="text-center select-none px-6 flex flex-col items-center justify-center"
             >
-              <h1 className="font-display font-light text-3xl md:text-5xl text-cream tracking-[0.25em] uppercase leading-none">
+              <div className="mb-6 flex items-center justify-center space-x-3">
+                <span className="font-display italic font-semibold text-6xl md:text-8xl text-gold tracking-tighter leading-none">A1</span>
+                <div className="h-10 w-[1px] bg-white/20 self-center" />
+                <div className="flex flex-col text-left justify-center">
+                  <span className="font-sans text-[9px] tracking-widest text-gold uppercase font-semibold leading-none mb-1">Classic Excellence</span>
+                  <span className="font-sans text-[7px] tracking-wider text-neutral-500 uppercase leading-none">RC: 1299138</span>
+                </div>
+              </div>
+              
+              <h1 className="font-display font-light text-4xl md:text-6xl text-cream tracking-[0.25em] uppercase leading-none mb-4">
                 Vision Worth
               </h1>
-              <p className="font-body text-[9px] text-gold tracking-[0.35em] uppercase mt-5">
-                Lagos • Handcrafted Living
+              <p className="font-body text-[9px] text-neutral-400 tracking-[0.3em] uppercase max-w-sm leading-relaxed">
+                "Building Vision with A1 Excellence"
               </p>
             </motion.div>
           </motion.div>
@@ -595,9 +786,13 @@ export default function App() {
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
           {...hoverProps}
-          className="font-display font-light text-lg md:text-2xl text-dark tracking-[0.2em] uppercase select-none hover:opacity-85 transition-opacity duration-300"
+          className="select-none hover:opacity-90 transition-opacity duration-300 flex items-center space-x-2"
         >
-          Vision Worth
+          <span className="font-display italic font-semibold text-3xl md:text-4xl text-gold tracking-tight leading-none mr-1">A1</span>
+          <div className="flex flex-col -space-y-0.5 text-left">
+            <span className="font-display font-light text-[10px] md:text-sm text-dark tracking-[0.2em] uppercase leading-none">VISION WORTH</span>
+            <span className="font-sans text-[5px] md:text-[6px] text-txt-muted uppercase tracking-[0.1em] font-bold leading-none">CLASSIC NIGERIA LTD</span>
+          </div>
         </a>
 
         {/* Actions panel right */}
@@ -755,8 +950,8 @@ export default function App() {
                 transition={{ duration: 1.5, ease: "easeOut" }}
               />
               
-              <span className="font-body text-[9px] tracking-widest text-gold uppercase mb-2 block">
-                New Collection — 2026
+              <span className="font-body text-[9px] tracking-widest text-gold uppercase mb-2 block font-semibold">
+                "Building Vision with A1 Excellence" — RC: 1299138
               </span>
               <h2 className="font-display font-light text-3xl md:text-5xl lg:text-6xl text-dark leading-[0.95] mb-4">
                 Crafted For Those<br />Who Demand More
@@ -994,7 +1189,7 @@ export default function App() {
                   key={activeSigIdx + (isSigHovered ? "-hovered" : "-normal")}
                   src={isSigHovered ? signatureImages[activeSigIdx].back : signatureImages[activeSigIdx].front}
                   alt="The Architect Chair" 
-                  className="absolute w-4/5 h-4/5 object-contain z-10"
+                  className="absolute inset-0 w-full h-full object-cover z-10"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
@@ -1018,11 +1213,11 @@ export default function App() {
                   key={idx}
                   onClick={() => setActiveSigIdx(idx)}
                   {...hoverProps}
-                  className={`w-20 h-20 bg-dark p-2 border focus:outline-none transition-colors duration-300 ${
+                  className={`w-20 h-20 bg-dark p-1 border focus:outline-none transition-colors duration-300 ${
                     activeSigIdx === idx ? "border-gold" : "border-transparent hover:border-gold/50"
                   }`}
                 >
-                  <img src={thumb.front} alt={`View ${idx + 1}`} className="w-full h-full object-contain" />
+                  <img src={thumb.front} alt={`View ${idx + 1}`} className="w-full h-full object-cover" />
                 </button>
               ))}
             </div>
@@ -1102,6 +1297,24 @@ export default function App() {
             <p className="font-body text-xs md:text-sm text-txt-muted max-w-xl">
               A selection of hand-finished items available for immediate order and custom sizing.
             </p>
+            {/* Elegant search input on homepage */}
+            <div className="relative mt-5 max-w-xs border-b border-dark/15 focus-within:border-gold transition-colors duration-300">
+              <input
+                type="text"
+                placeholder="Search pieces..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="bg-transparent text-dark focus:outline-none py-2 pr-8 text-[10px] tracking-widest uppercase w-full placeholder-neutral-400 font-body"
+              />
+              {searchQuery && (
+                <button 
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-0 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-gold font-mono text-[9px] uppercase tracking-wider"
+                >
+                  Clear
+                </button>
+              )}
+            </div>
           </div>
           <div className="flex flex-wrap gap-4">
             {["all", "seating", "tables", "bedroom", "office", "custom"].map((cat) => (
@@ -1121,7 +1334,14 @@ export default function App() {
 
         {/* Product Grid listing */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {PRODUCTS.filter(prod => activeCategory === "all" || prod.category === activeCategory).slice(0, 8).map((prod) => (
+          {PRODUCTS.filter(prod => {
+            const matchesCategory = activeCategory === "all" || prod.category === activeCategory;
+            const matchesSearch = !searchQuery || 
+              prod.product.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              prod.spec.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              prod.category.toLowerCase().includes(searchQuery.toLowerCase());
+            return matchesCategory && matchesSearch;
+          }).slice(0, 8).map((prod) => (
             <div key={prod.id} className="group flex flex-col">
               <div className="relative aspect-[3/4] w-full overflow-hidden bg-neutral-200">
                 <img 
@@ -1440,144 +1660,634 @@ export default function App() {
       </section>
 
       {/* 17. SECTION 11 — SUBMISSION CONSULTATION INQUIRY */}
-      <section id="newsletter" className="w-full bg-dark text-cream py-24 md:py-32 px-6 md:px-12 flex items-center justify-center">
-        <div className="max-w-3xl w-full">
+      <section id="newsletter" className="w-full bg-dark text-cream py-24 md:py-32 px-6 md:px-12 flex flex-col items-center justify-center border-t border-b border-white/5">
+        <div className="max-w-4xl w-full">
           
           <div className="text-center mb-16">
             <span className="font-body text-[9px] tracking-widest text-gold uppercase mb-3 block">
-              Begin Your Commission
+              Bespoke Atelier Commission
             </span>
             <h2 className="font-display font-light text-4xl md:text-5xl text-cream mb-6">
-              {formTitle}
+              Create Your Vision
             </h2>
-            <p className="font-body text-xs md:text-sm text-text-light leading-relaxed max-w-md mx-auto">
-              Tell us what you envision. Share your details below and our design team will reach out within 24 hours to begin your private consultation.
+            <p className="font-body text-xs md:text-sm text-text-light leading-relaxed max-w-xl mx-auto">
+              Through our interactive studio, configure an iconic furniture piece to your exact aesthetic, material, and spatial requirements before manual carving.
             </p>
           </div>
 
-          <form onSubmit={handleFormSubmit} className="w-full space-y-8">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-              <div className="flex flex-col">
-                <label htmlFor="client-name" className="font-body text-[8px] tracking-widest text-gold uppercase mb-3 font-semibold">
-                  Full Name
-                </label>
-                <input 
-                  type="text" 
-                  id="client-name" 
-                  placeholder="e.g. Adaeze Nwosu" 
-                  required
-                  value={formName}
-                  onChange={(e) => setFormName(e.target.value)}
-                  className="w-full bg-transparent text-cream border-b border-white/15 focus:border-gold focus:outline-none py-3 text-xs tracking-wider font-body placeholder-neutral-600 transition-colors duration-300"
-                />
-              </div>
-              <div className="flex flex-col">
-                <label htmlFor="subscriber-email" className="font-body text-[8px] tracking-widest text-gold uppercase mb-3 font-semibold">
-                  Email Address
-                </label>
-                <input 
-                  type="email" 
-                  id="subscriber-email" 
-                  placeholder="you@example.com" 
-                  required
-                  value={formEmail}
-                  onChange={(e) => setFormEmail(e.target.value)}
-                  className="w-full bg-transparent text-cream border-b border-white/15 focus:border-gold focus:outline-none py-3 text-xs tracking-wider font-body placeholder-neutral-600 transition-colors duration-300"
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-              <div className="flex flex-col">
-                <label htmlFor="client-phone" className="font-body text-[8px] tracking-widest text-gold uppercase mb-3 font-semibold">
-                  Phone Number
-                </label>
-                <input 
-                  type="tel" 
-                  id="client-phone" 
-                  placeholder="+234 801 234 5678" 
-                  required
-                  value={formPhone}
-                  onChange={(e) => setFormPhone(e.target.value)}
-                  className="w-full bg-transparent text-cream border-b border-white/15 focus:border-gold focus:outline-none py-3 text-xs tracking-wider font-body placeholder-neutral-600 transition-colors duration-300"
-                />
-              </div>
-              <div className="flex flex-col">
-                <label htmlFor="client-interest" className="font-body text-[8px] tracking-widest text-gold uppercase mb-3 font-semibold">
-                  I'm Interested In
-                </label>
-                <select 
-                  id="client-interest" 
-                  required
-                  value={formInterest}
-                  onChange={(e) => setFormInterest(e.target.value)}
-                  className="w-full bg-transparent text-cream border-b border-white/15 focus:border-gold focus:outline-none py-3 text-xs tracking-wider font-body appearance-none transition-colors duration-300 cursor-pointer"
-                >
-                  <option value="" disabled className="bg-dark text-neutral-500">Select a category</option>
-                  <option value="seating" className="bg-dark">Seating</option>
-                  <option value="tables" className="bg-dark">Tables & Dining</option>
-                  <option value="bedroom" className="bg-dark">Bedroom Suite</option>
-                  <option value="office" className="bg-dark">Workspace & Office</option>
-                  <option value="custom" className="bg-dark">Fully Custom / Bespoke</option>
-                  <option value="consultation" className="bg-dark">General Consultation</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="flex flex-col">
-              <label htmlFor="client-message" className="font-body text-[8px] tracking-widest text-gold uppercase mb-3 font-semibold">
-                Your Brief
-              </label>
-              <textarea 
-                id="client-message" 
-                rows={3} 
-                placeholder="Tell us about your space, dimensions, preferred materials, or any inspiration you have in mind..."
-                value={formMessage}
-                onChange={(e) => setFormMessage(e.target.value)}
-                className="w-full bg-transparent text-cream border-b border-white/15 focus:border-gold focus:outline-none py-3 text-xs tracking-wider font-body placeholder-neutral-600 transition-colors duration-300 resize-none"
-              />
-            </div>
-
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-6 pt-4">
-              <span className="font-body text-[8px] tracking-widest text-neutral-500 uppercase">
-                We respond within 24 hours. No spam, ever.
-              </span>
-              <button 
-                type="submit" 
-                {...hoverProps}
-                className="relative overflow-hidden inline-block bg-gold text-black border border-gold px-10 py-4 text-[9px] tracking-widest uppercase font-body group"
+          {/* CUSTOMIZER STEPPER BAR */}
+          <div className="flex items-center justify-between max-w-lg mx-auto mb-16 relative">
+            <div className="absolute top-[14px] left-2 right-2 h-[1px] bg-white/10 z-0" />
+            <div 
+              className="absolute top-[14px] left-2 h-[1px] bg-gold transition-all duration-500 z-0" 
+              style={{ width: `${((customizerStep - 1) / 3) * 100}%` }}
+            />
+            
+            {[
+              { num: 1, label: "Base Design" },
+              { num: 2, label: "Materials" },
+              { num: 3, label: "Spatial Sizing" },
+              { num: 4, label: "Confirm Spec" }
+            ].map((st) => (
+              <button
+                key={st.num}
+                onClick={() => {
+                  if (st.num < customizerStep || (st.num === 4 && customizerBasePiece)) {
+                    setCustomizerStep(st.num);
+                  }
+                }}
+                className="flex flex-col items-center relative z-10 group focus:outline-none"
               >
-                <span className="absolute inset-0 bg-gold-light translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500 ease-out origin-left" />
-                <span className="relative z-10 font-semibold">Submit Order Inquiry</span>
+                <div 
+                  className={`w-7 h-7 rounded-full flex items-center justify-center font-mono text-[9px] font-bold border transition-all duration-500 ${
+                    customizerStep >= st.num
+                      ? "bg-gold border-gold text-black shadow-[0_0_12px_rgba(212,175,55,0.3)]"
+                      : "bg-dark border-white/20 text-neutral-500 group-hover:border-gold/50"
+                  }`}
+                >
+                  {customizerStep > st.num ? <Check className="w-3.5 h-3.5" strokeWidth={3} /> : st.num}
+                </div>
+                <span 
+                  className={`font-body text-[8px] tracking-wider uppercase mt-3 transition-colors duration-300 ${
+                    customizerStep === st.num ? "text-gold font-semibold" : "text-neutral-500"
+                  }`}
+                >
+                  {st.label}
+                </span>
               </button>
-            </div>
-          </form>
+            ))}
+          </div>
+
+          {/* CUSTOMIZER CONTAINER WITH FLUID ENTRANCE ANIMATION */}
+          <div className="bg-black/45 border border-white/5 rounded-none p-6 md:p-10 backdrop-blur-md relative min-h-[480px] flex flex-col justify-between">
+            <AnimatePresence mode="wait">
+              {customizerStep === 1 && (
+                <motion.div
+                  key="step-1"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}
+                  className="w-full space-y-8"
+                >
+                  <div>
+                    <h3 className="font-display font-light text-xl text-cream mb-2">Step 1 — Select Core Piece & Design Layout</h3>
+                    <p className="font-body text-xs text-neutral-400">Select a structural furniture category, then choose one of our signature profiles to use as your design blueprint.</p>
+                  </div>
+
+                  {/* Horizontal Category Tabs */}
+                  <div className="flex flex-wrap gap-2 border-b border-white/10 pb-4">
+                    {[
+                      { id: "seating", label: "Seating" },
+                      { id: "tables", label: "Tables" },
+                      { id: "bedroom", label: "Bedroom" },
+                      { id: "office", label: "Office" },
+                      { id: "custom", label: "Bespoke" }
+                    ].map((cat) => (
+                      <button
+                        key={cat.id}
+                        onClick={() => {
+                          setCustomizerCategory(cat.id);
+                          const pieces = getProductsForCategory(cat.id);
+                          if (pieces.length > 0) {
+                            selectBasePiece(pieces[0].name, cat.id);
+                          }
+                        }}
+                        className={`px-5 py-2.5 text-[9px] tracking-widest uppercase font-body transition-all border duration-300 ${
+                          customizerCategory === cat.id
+                            ? "bg-cream text-dark border-cream font-bold"
+                            : "bg-transparent text-neutral-400 border-white/10 hover:text-cream hover:border-white/20"
+                        }`}
+                      >
+                        {cat.label}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Base Piece Cards Grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {getProductsForCategory(customizerCategory).map((piece) => (
+                      <button
+                        key={piece.id}
+                        onClick={() => selectBasePiece(piece.name, customizerCategory)}
+                        className={`text-left p-5 border transition-all duration-300 flex flex-col justify-between group ${
+                          customizerBasePiece === piece.name
+                            ? "border-gold bg-gold/5"
+                            : "border-white/5 bg-white/[0.02] hover:border-white/15"
+                        }`}
+                      >
+                        <div>
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="font-display font-light text-sm text-cream group-hover:text-gold transition-colors duration-300">
+                              {piece.name}
+                            </span>
+                            <div className={`w-3 h-3 rounded-full border flex items-center justify-center ${
+                              customizerBasePiece === piece.name ? "border-gold bg-gold" : "border-white/30"
+                            }`}>
+                              {customizerBasePiece === piece.name && <div className="w-1.5 h-1.5 bg-black rounded-full" />}
+                            </div>
+                          </div>
+                          <span className="font-body text-[10px] text-neutral-400 leading-relaxed block">
+                            {piece.spec}
+                          </span>
+                        </div>
+                        <span className="font-mono text-xs text-gold mt-4 font-medium">
+                          {piece.price}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Flow controls */}
+                  <div className="flex justify-end pt-6 border-t border-white/5">
+                    <button
+                      onClick={() => setCustomizerStep(2)}
+                      disabled={!customizerBasePiece}
+                      className="bg-gold text-black px-8 py-3.5 text-[9px] tracking-widest uppercase font-body font-bold hover:bg-gold-light transition-colors disabled:opacity-50 flex items-center space-x-2"
+                    >
+                      <span>Choose Finishes</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+
+              {customizerStep === 2 && (
+                <motion.div
+                  key="step-2"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}
+                  className="w-full space-y-8"
+                >
+                  <div>
+                    <h3 className="font-display font-light text-xl text-cream mb-2">Step 2 — Curate Sustainable Cured Materials</h3>
+                    <p className="font-body text-xs text-neutral-400">Match premium structural timber logged and cured in Nigeria with fine handworked metal, leather, or glass accents.</p>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {/* TIMBER SELECTION */}
+                    <div className="space-y-4">
+                      <span className="font-body text-[8px] tracking-widest text-gold uppercase font-bold block mb-2">
+                        Primary Timber Structure
+                      </span>
+                      <div className="space-y-3">
+                        {[
+                          { name: "Smoked Black Walnut", origin: "Bespoke Cured, Lagos", desc: "Deep rich charcoal-espresso tones with a highly dramatic cathedral grain.", bg: "bg-amber-950" },
+                          { name: "African Mahogany", origin: "Hand-Selected, Benin", desc: "Vibrant reddish-brown grain with fine textures and a radiant satin luster.", bg: "bg-red-950" },
+                          { name: "Solid Teak", origin: "Lekki Atelier Air-Dried", desc: "Robust golden honey hues with oily grains that resist tropical moisture.", bg: "bg-yellow-800" },
+                          { name: "Ebonized Oak", origin: "Ibadan Charred Finish", desc: "Velvety, solid matte black finish that beautifully exposes underlying fibers.", bg: "bg-neutral-950" }
+                        ].map((wood) => (
+                          <button
+                            key={wood.name}
+                            onClick={() => setCustomizerWood(wood.name)}
+                            className={`w-full text-left p-4 border transition-all duration-300 flex items-start space-x-4 ${
+                              customizerWood === wood.name
+                                ? "border-gold bg-gold/5"
+                                : "border-white/5 bg-white/[0.01] hover:border-white/10"
+                            }`}
+                          >
+                            <div className={`w-8 h-8 rounded-none flex-shrink-0 border border-white/10 ${wood.bg} shadow-[inset_0_0_8px_rgba(0,0,0,0.5)]`} />
+                            <div>
+                              <div className="flex items-center justify-between mb-1">
+                                <span className="font-display font-light text-xs text-cream">{wood.name}</span>
+                                <span className="font-body text-[7px] tracking-widest text-gold uppercase">{wood.origin}</span>
+                              </div>
+                              <p className="font-body text-[10px] text-neutral-400 leading-normal">{wood.desc}</p>
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* ACCENTS SELECTION */}
+                    <div className="space-y-4">
+                      <span className="font-body text-[8px] tracking-widest text-gold uppercase font-bold block mb-2">
+                        Secondary Material Details
+                      </span>
+                      <div className="space-y-3">
+                        {[
+                          { name: "Aged Brushed Brass", provider: "Kano Metalworks", desc: "Golden metallic luster manually aged and brushed for subtle light play.", bg: "bg-yellow-600" },
+                          { name: "Calacatta Marble", provider: "Imported, Lagos Port", desc: "Ultra-premium white crystalline slab interlaced with dramatic slate-grey veining.", bg: "bg-neutral-100" },
+                          { name: "Cordovan Leather", provider: "Kano Tanneries", desc: "Thick vegetable-tanned leather straps and cushions conditioned with natural oils.", bg: "bg-orange-950" },
+                          { name: "Fluted Glass", provider: "Lagos Glassworks", desc: "Crisp ribbed panels that offer delicate translucency for partitions and cabinet faces.", bg: "bg-slate-300" }
+                        ].map((acc) => (
+                          <button
+                            key={acc.name}
+                            onClick={() => setCustomizerAccent(acc.name)}
+                            className={`w-full text-left p-4 border transition-all duration-300 flex items-start space-x-4 ${
+                              customizerAccent === acc.name
+                                ? "border-gold bg-gold/5"
+                                : "border-white/5 bg-white/[0.01] hover:border-white/10"
+                            }`}
+                          >
+                            <div className={`w-8 h-8 rounded-none flex-shrink-0 border border-white/10 ${acc.bg}`} />
+                            <div>
+                              <div className="flex items-center justify-between mb-1">
+                                <span className="font-display font-light text-xs text-cream">{acc.name}</span>
+                                <span className="font-body text-[7px] tracking-widest text-gold uppercase">{acc.provider}</span>
+                              </div>
+                              <p className="font-body text-[10px] text-neutral-400 leading-normal">{acc.desc}</p>
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Flow controls */}
+                  <div className="flex justify-between pt-6 border-t border-white/5">
+                    <button
+                      onClick={() => setCustomizerStep(1)}
+                      className="border border-white/10 text-cream px-6 py-3.5 text-[9px] tracking-widest uppercase font-body hover:bg-white/[0.05] transition-colors flex items-center space-x-2"
+                    >
+                      <ChevronLeft className="w-3.5 h-3.5" />
+                      <span>Back</span>
+                    </button>
+                    <button
+                      onClick={() => setCustomizerStep(3)}
+                      className="bg-gold text-black px-8 py-3.5 text-[9px] tracking-widest uppercase font-body font-bold hover:bg-gold-light transition-colors flex items-center space-x-2"
+                    >
+                      <span>Set Dimensions</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+
+              {customizerStep === 3 && (
+                <motion.div
+                  key="step-3"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}
+                  className="w-full space-y-8"
+                >
+                  <div>
+                    <h3 className="font-display font-light text-xl text-cream mb-2">Step 3 — Structural Scale & Sizing Proportions</h3>
+                    <p className="font-body text-xs text-neutral-400">Adapt the spatial footprint of your commission to match small urban corridors or majestic grand lobbies.</p>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    {/* Slider and footprint controls */}
+                    <div className="space-y-6">
+                      <div className="grid grid-cols-2 gap-2">
+                        {[
+                          { id: "Standard", title: "Standard Layout", desc: "Original ergonomics" },
+                          { id: "Compact Living", title: "Compact Living", desc: "Scaled down 15%" },
+                          { id: "Grand Suite", title: "Grand Suite", desc: "Expanded volume 25%" },
+                          { id: "Custom", title: "Custom Dimensions", desc: "Millimeter-level scale" }
+                        ].map((scale) => (
+                          <button
+                            key={scale.id}
+                            onClick={() => {
+                              setCustomizerSizeScale(scale.id);
+                              if (scale.id === "Standard") {
+                                selectBasePiece(customizerBasePiece, customizerCategory);
+                              } else if (scale.id === "Compact Living") {
+                                selectBasePiece(customizerBasePiece, customizerCategory);
+                                setCustomizerWidth((w) => Math.round(w * 0.85));
+                                setCustomizerDepth((d) => Math.round(d * 0.85));
+                                setCustomizerHeight((h) => Math.round(h * 0.85));
+                              } else if (scale.id === "Grand Suite") {
+                                selectBasePiece(customizerBasePiece, customizerCategory);
+                                setCustomizerWidth((w) => Math.round(w * 1.25));
+                                setCustomizerDepth((d) => Math.round(d * 1.25));
+                                setCustomizerHeight((h) => Math.round(h * 1.25));
+                              }
+                            }}
+                            className={`p-4 text-left border transition-all duration-300 ${
+                              customizerSizeScale === scale.id
+                                ? "border-gold bg-gold/5"
+                                : "border-white/5 bg-white/[0.01] hover:border-white/10"
+                            }`}
+                          >
+                            <span className="font-display font-light text-xs text-cream block mb-1">{scale.title}</span>
+                            <span className="font-body text-[9px] text-neutral-500 block leading-tight">{scale.desc}</span>
+                          </button>
+                        ))}
+                      </div>
+
+                      {/* Manual sliders (Only shown if 'Custom' or standard) */}
+                      <div className="space-y-4 pt-4 border-t border-white/5">
+                        <div className="flex flex-col space-y-1">
+                          <div className="flex justify-between items-center text-[10px] font-body">
+                            <span className="text-neutral-400">WIDTH (LENGTH)</span>
+                            <span className="text-gold font-mono font-bold">{customizerWidth} cm</span>
+                          </div>
+                          <input
+                            type="range"
+                            min={40}
+                            max={320}
+                            disabled={customizerSizeScale !== "Custom"}
+                            value={customizerWidth}
+                            onChange={(e) => setCustomizerWidth(Number(e.target.value))}
+                            className="w-full accent-gold h-1 bg-white/10 rounded-lg cursor-pointer disabled:opacity-40"
+                          />
+                        </div>
+
+                        <div className="flex flex-col space-y-1">
+                          <div className="flex justify-between items-center text-[10px] font-body">
+                            <span className="text-neutral-400">DEPTH (BREADTH)</span>
+                            <span className="text-gold font-mono font-bold">{customizerDepth} cm</span>
+                          </div>
+                          <input
+                            type="range"
+                            min={35}
+                            max={240}
+                            disabled={customizerSizeScale !== "Custom"}
+                            value={customizerDepth}
+                            onChange={(e) => setCustomizerDepth(Number(e.target.value))}
+                            className="w-full accent-gold h-1 bg-white/10 rounded-lg cursor-pointer disabled:opacity-40"
+                          />
+                        </div>
+
+                        <div className="flex flex-col space-y-1">
+                          <div className="flex justify-between items-center text-[10px] font-body">
+                            <span className="text-neutral-400">HEIGHT</span>
+                            <span className="text-gold font-mono font-bold">{customizerHeight} cm</span>
+                          </div>
+                          <input
+                            type="range"
+                            min={30}
+                            max={220}
+                            disabled={customizerSizeScale !== "Custom"}
+                            value={customizerHeight}
+                            onChange={(e) => setCustomizerHeight(Number(e.target.value))}
+                            className="w-full accent-gold h-1 bg-white/10 rounded-lg cursor-pointer disabled:opacity-40"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* DYNAMIC SCALE VISUALIZER WIREFRAME */}
+                    <div className="flex flex-col items-center justify-center p-6 border border-white/5 bg-white/[0.01] rounded-none aspect-square relative overflow-hidden">
+                      <span className="absolute top-4 left-4 font-body text-[7px] tracking-widest text-neutral-500 uppercase">3D Bounding Envelope</span>
+                      
+                      {/* Wireframe Box Container */}
+                      <div className="w-40 h-40 flex items-center justify-center relative">
+                        <motion.div
+                          animate={{
+                            width: `${Math.max(30, Math.min(100, (customizerWidth / 320) * 100))}%`,
+                            height: `${Math.max(30, Math.min(100, (customizerHeight / 220) * 100))}%`,
+                            transform: `perspective(500px) rotateX(25deg) rotateY(-35deg)`
+                          }}
+                          transition={{ type: "spring", stiffness: 80, damping: 15 }}
+                          className="border border-gold bg-gold/[0.03] relative flex items-center justify-center shadow-[0_0_24px_rgba(212,175,55,0.06)]"
+                        >
+                          {/* Inner details simulating customizer */}
+                          <div className="absolute inset-0 border border-gold/15 flex flex-col justify-between p-2 pointer-events-none">
+                            <div className="flex justify-between">
+                              <div className="w-1.5 h-1.5 border-t border-l border-gold" />
+                              <div className="w-1.5 h-1.5 border-t border-r border-gold" />
+                            </div>
+                            <div className="flex justify-between">
+                              <div className="w-1.5 h-1.5 border-b border-l border-gold" />
+                              <div className="w-1.5 h-1.5 border-b border-r border-gold" />
+                            </div>
+                          </div>
+                          <span className="font-mono text-[8px] text-gold/60">{customizerWidth}x{customizerDepth}x{customizerHeight}</span>
+                        </motion.div>
+                      </div>
+
+                      {/* Math descriptors */}
+                      <div className="w-full text-center space-y-1 mt-4">
+                        <div className="font-mono text-[9px] text-cream">
+                          Calculated Footprint: <span className="text-gold font-bold">{((customizerWidth * customizerDepth) / 10000).toFixed(2)} m²</span>
+                        </div>
+                        <div className="font-body text-[8px] text-neutral-500 uppercase tracking-widest leading-none">
+                          Volume Class: {((customizerWidth * customizerDepth * customizerHeight) / 1000).toFixed(0)} Liters &bull; Weight est: ~{Math.round((customizerWidth * customizerDepth * customizerHeight) / 12000 + 12)}kg
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Flow controls */}
+                  <div className="flex justify-between pt-6 border-t border-white/5">
+                    <button
+                      onClick={() => setCustomizerStep(2)}
+                      className="border border-white/10 text-cream px-6 py-3.5 text-[9px] tracking-widest uppercase font-body hover:bg-white/[0.05] transition-colors flex items-center space-x-2"
+                    >
+                      <ChevronLeft className="w-3.5 h-3.5" />
+                      <span>Back</span>
+                    </button>
+                    <button
+                      onClick={() => setCustomizerStep(4)}
+                      className="bg-gold text-black px-8 py-3.5 text-[9px] tracking-widest uppercase font-body font-bold hover:bg-gold-light transition-colors flex items-center space-x-2"
+                    >
+                      <span>Finalize Spec</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+
+              {customizerStep === 4 && (
+                <motion.div
+                  key="step-4"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}
+                  className="w-full space-y-8"
+                >
+                  <div>
+                    <h3 className="font-display font-light text-xl text-cream mb-2">Step 4 — Final Spec Review & Contact Dispatch</h3>
+                    <p className="font-body text-xs text-neutral-400">Review your bespoke manifest sheet and input your details to begin your consultation with our design directors.</p>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                    
+                    {/* CLASSIC BLACK/GOLD SPEC CARD INVOICE */}
+                    <div className="bg-neutral-950 border border-gold/30 p-6 font-mono text-[10px] space-y-5 text-cream shadow-[0_0_20px_rgba(212,175,55,0.05)] relative overflow-hidden">
+                      <div className="absolute top-0 right-0 w-32 h-32 bg-gold/5 blur-3xl pointer-events-none" />
+                      
+                      {/* Brand Header */}
+                      <div className="text-center border-b border-white/10 pb-4 space-y-1">
+                        <span className="font-display italic font-semibold text-lg text-gold block tracking-wide">A1 VISION WORTH</span>
+                        <span className="text-[7px] tracking-widest text-neutral-500 uppercase block">RC: 1299138 &bull; DESIGN STUDIO</span>
+                        <div className="text-[8px] text-gold tracking-widest pt-1 uppercase">Bespoke Commission Manifest</div>
+                      </div>
+
+                      {/* Items table */}
+                      <div className="space-y-3">
+                        <div className="flex justify-between border-b border-white/5 pb-2">
+                          <span className="text-neutral-500">BLUEPRINT:</span>
+                          <span className="text-cream text-right font-bold uppercase">{customizerBasePiece}</span>
+                        </div>
+                        <div className="flex justify-between border-b border-white/5 pb-2">
+                          <span className="text-neutral-500">PRIMARY WOOD:</span>
+                          <span className="text-cream text-right">{customizerWood}</span>
+                        </div>
+                        <div className="flex justify-between border-b border-white/5 pb-2">
+                          <span className="text-neutral-500">SECONDARY ACCENT:</span>
+                          <span className="text-cream text-right">{customizerAccent}</span>
+                        </div>
+                        <div className="flex justify-between border-b border-white/5 pb-2">
+                          <span className="text-neutral-500">SPATIAL SCALE:</span>
+                          <span className="text-cream text-right uppercase">{customizerSizeScale}</span>
+                        </div>
+                        <div className="flex justify-between border-b border-white/5 pb-2">
+                          <span className="text-neutral-500">ENVELOPE SIZE:</span>
+                          <span className="text-cream text-right">{customizerWidth}w × {customizerDepth}d × {customizerHeight}h cm</span>
+                        </div>
+                        <div className="flex justify-between border-b border-white/5 pb-2">
+                          <span className="text-neutral-500">EST. PRODUCTION:</span>
+                          <span className="text-cream text-right">8 to 12 Weeks (Lagos Atelier)</span>
+                        </div>
+                      </div>
+
+                      {/* Investment Range */}
+                      <div className="pt-3 border-t border-dashed border-white/15 flex items-center justify-between">
+                        <div className="flex flex-col">
+                          <span className="text-[8px] tracking-wider text-neutral-500">GUIDE INVESTMENT ESTIMATE:</span>
+                          <span className="text-[7px] text-neutral-500 normal-case italic">*Curing & delivery within Lagos included</span>
+                        </div>
+                        <span className="text-lg font-bold text-gold">
+                          {new Intl.NumberFormat("en-NG", {
+                            style: "currency",
+                            currency: "NGN",
+                            maximumFractionDigits: 0
+                          }).format(calculateEstimatedPrice())}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* CONTACT INPUT FIELDS */}
+                    <form onSubmit={handleCustomizerSubmit} className="space-y-5">
+                      <div className="flex flex-col">
+                        <label htmlFor="client-name" className="font-body text-[8px] tracking-widest text-gold uppercase mb-2 font-semibold">
+                          Your Full Name
+                        </label>
+                        <input 
+                          type="text" 
+                          id="client-name" 
+                          required
+                          placeholder="Adaeze Nwosu"
+                          value={formName}
+                          onChange={(e) => setFormName(e.target.value)}
+                          className="w-full bg-transparent text-cream border-b border-white/15 focus:border-gold focus:outline-none py-2.5 text-xs tracking-wider font-body placeholder-neutral-600 transition-colors"
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="flex flex-col">
+                          <label htmlFor="client-email" className="font-body text-[8px] tracking-widest text-gold uppercase mb-2 font-semibold">
+                            Email Address
+                          </label>
+                          <input 
+                            type="email" 
+                            id="client-email" 
+                            required
+                            placeholder="ada@example.com"
+                            value={formEmail}
+                            onChange={(e) => setFormEmail(e.target.value)}
+                            className="w-full bg-transparent text-cream border-b border-white/15 focus:border-gold focus:outline-none py-2.5 text-xs tracking-wider font-body placeholder-neutral-600 transition-colors"
+                          />
+                        </div>
+                        <div className="flex flex-col">
+                          <label htmlFor="client-phone-custom" className="font-body text-[8px] tracking-widest text-gold uppercase mb-2 font-semibold">
+                            Phone Number
+                          </label>
+                          <input 
+                            type="tel" 
+                            id="client-phone-custom" 
+                            required
+                            placeholder="+234 803..."
+                            value={formPhone}
+                            onChange={(e) => setFormPhone(e.target.value)}
+                            className="w-full bg-transparent text-cream border-b border-white/15 focus:border-gold focus:outline-none py-2.5 text-xs tracking-wider font-body placeholder-neutral-600 transition-colors"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="flex flex-col">
+                        <label htmlFor="client-message-custom" className="font-body text-[8px] tracking-widest text-gold uppercase mb-2 font-semibold">
+                          Custom Commission Request Brief / Design Notes
+                        </label>
+                        <textarea 
+                          id="client-message-custom" 
+                          rows={3}
+                          placeholder="Describe your room layout, desired custom timber options, or hardware details. Our Lagos artisans will manual-carve to these specifics..."
+                          value={formMessage}
+                          onChange={(e) => setFormMessage(e.target.value)}
+                          className="w-full bg-transparent text-cream border-b border-white/15 focus:border-gold focus:outline-none py-2.5 text-xs tracking-wider font-body placeholder-neutral-600 transition-colors resize-none"
+                        />
+                      </div>
+
+                      <div className="flex justify-between items-center pt-4">
+                        <button
+                          type="button"
+                          onClick={() => setCustomizerStep(3)}
+                          className="border border-white/10 text-cream px-5 py-3 text-[9px] tracking-widest uppercase font-body hover:bg-white/[0.05] transition-colors flex items-center space-x-2"
+                        >
+                          <ChevronLeft className="w-3.5 h-3.5" />
+                          <span>Back</span>
+                        </button>
+                        
+                        <button 
+                          type="submit" 
+                          {...hoverProps}
+                          className="relative overflow-hidden inline-block bg-gold text-black border border-gold px-8 py-3.5 text-[9px] tracking-widest uppercase font-body group"
+                        >
+                          <span className="absolute inset-0 bg-gold-light translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500 ease-out origin-left" />
+                          <span className="relative z-10 font-bold">Submit Commission Request</span>
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
       </section>
 
       {/* FOOTER */}
       <footer className="w-full bg-black text-cream pt-20 pb-8 px-6 md:px-12 border-t border-white/5">
         
-        <div className="text-center mb-16">
-          <h2 className="font-display font-light text-3xl md:text-5xl text-cream tracking-[0.25em] uppercase leading-none select-none">
-            Vision Worth
-          </h2>
+        <div className="flex flex-col items-center justify-center text-center mb-16">
+          <div className="flex items-center space-x-2 md:space-x-3 select-none mb-4">
+            <span className="font-display italic font-semibold text-4xl md:text-6xl text-gold tracking-tight leading-none mr-1">A1</span>
+            <div className="flex flex-col -space-y-1 text-left">
+              <span className="font-display font-light text-base md:text-2xl text-cream tracking-[0.25em] uppercase leading-none">VISION WORTH</span>
+              <span className="font-sans text-[7px] md:text-[8px] text-neutral-500 uppercase tracking-[0.15em] font-bold leading-none">CLASSIC NIGERIA LTD</span>
+            </div>
+          </div>
+          <p className="font-body text-[9px] text-gold tracking-[0.3em] uppercase mt-2">
+            "Building Vision with A1 Excellence" &bull; RC: 1299138
+          </p>
           <div className="h-[1px] bg-white/10 w-full mt-10" />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 font-body text-xs text-neutral-400 uppercase tracking-wider mb-20">
           <div className="flex flex-col space-y-4">
-            <span className="font-display italic text-gold tracking-normal text-sm normal-case">
-              Handcrafted with intention in Lagos.
+            <span className="font-display italic text-gold tracking-normal text-sm normal-case font-semibold">
+              "Building Vision with A1 Excellence"
             </span>
             <address className="not-italic text-neutral-400 leading-relaxed text-[11px] normal-case">
-              A1 Visionworth Classic Nigeria Ltd.<br />
-              57 Iwaya Road, Yaba, Lagos<br />
+              <strong className="text-cream block mb-1">A1 Vision Worth Classic Nigeria Ltd.</strong>
+              RC: 1299138<br />
+              57, Iwaya Raod, Yaba, Lagos<br />
               Nigeria
             </address>
-            <a href="tel:08054622076" {...hoverProps} className="text-neutral-400 hover:text-gold transition-colors duration-300 block text-[11px]">
-              08054622076
-            </a>
+            <div className="text-[11px] text-neutral-400 normal-case flex flex-col space-y-1">
+              <span className="text-[9px] text-gold uppercase tracking-wider font-semibold block mt-1">Contact Person</span>
+              <span className="text-cream font-medium">Akintoyodavidson</span>
+              <div className="flex flex-col space-y-1 mt-2">
+                <a href="tel:+2348054622076" {...hoverProps} className="hover:text-gold text-neutral-300 transition-colors duration-300 block font-mono text-[11px]">
+                  +234 805 462 2076
+                </a>
+                <a href="tel:+2348026572272" {...hoverProps} className="hover:text-gold text-neutral-300 transition-colors duration-300 block font-mono text-[11px]">
+                  +234 802 657 2272
+                </a>
+                <a href="mailto:slvisionwcinfo@gmail.com" {...hoverProps} className="hover:text-gold text-neutral-300 transition-colors duration-300 block font-mono text-[11px] underline mt-1 break-all">
+                  slvisionwcinfo@gmail.com
+                </a>
+              </div>
+            </div>
           </div>
 
           <div>
